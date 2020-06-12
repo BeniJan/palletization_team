@@ -1,5 +1,4 @@
 class Trapdoors:
-    from time import sleep
 
     def __init__(self, arduinoBoard):
         self.board = arduinoBoard
@@ -20,7 +19,7 @@ class Trapdoors:
             print("ERROR: Trapdoor already opened")
         else:
             print("\nOpening trapdoor number " + str(trapdoor))
-            # self.board.analog[{PORTA_DO_SERVO_DO_ALCAPAO_X}].write(120)
+            # self.board.analog[PORTA_DO_SERVO_DO_ALCAPAO_X].write(120)
             self.trapdoorsStates[trapdoor] = True
 
     def close(self, trapdoor):

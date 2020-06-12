@@ -59,14 +59,10 @@ palletizer = Palletizer(shirtDisorderedList)
 shirtsDestiny = []
 currentSize = ""
 
-
-
 while palletizer.dynamicShirtList:
     if not controller.shirtInBelt():
         continue
 
-    palletizer.shirtList
-    palletizer.dynamicShirtList
     palletizer.separateByModel()
     palletizer.labelTrapdoors()
 
@@ -86,7 +82,7 @@ while palletizer.dynamicShirtList:
                     controller.trapdoors.drop(i + 1)
                     controller.trapdoors.close(i + 1)
 
-            print("\n\n Current box is ready, loaded with " + str(palletizer.getPlacedShirtsCounter(currentSize)) + " shirts\n\n")
+            print("\n\n Current box is ready, loaded with " + str(palletizer.getPlacedShirtsCounter(currentSize)) + " " + currentSize + " " + "shirts\n\n")
 
             while False: # controller.boxUnderRamp():
                 continue
@@ -106,7 +102,7 @@ while palletizer.dynamicShirtList:
             while False: # controller.boxUnderRamp():
                 continue
 
-        print("\n\n Current box is ready, loaded with " + str(palletizer.getPlacedShirtsCounter("big")) + " shirts\n\n")
+        print("\n\n Current box is ready, loaded with " + str(palletizer.getPlacedShirtsCounter("big")) + " big shirts\n\n")
 
     if palletizer.getPlacedShirtsCounter("small") > 0:
         for i, trapdoor in enumerate(palletizer.trapdoorLabels):
@@ -121,9 +117,7 @@ while palletizer.dynamicShirtList:
             while False: # controller.boxUnderRamp():
                 continue
 
-        print("\n\n Current box is ready, loaded with " + str(palletizer.getPlacedShirtsCounter("small")) + " shirts\n\n")
+        print("\n\n Current box is ready, loaded with " + str(palletizer.getPlacedShirtsCounter("small")) + " small shirts\n\n")
 
     palletizer.cleanAttributes()
     palletizer.clearCounters()
-
-print("its over")

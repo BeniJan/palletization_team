@@ -1,9 +1,7 @@
 class Belt:
-    from time import sleep
 
     def __init__(self, arduinoBoard):
         self.board = arduinoBoard
-
         self.time = __import__('time')
 
     def rollBelt(self, shirtUnits):
