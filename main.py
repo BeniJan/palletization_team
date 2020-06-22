@@ -22,35 +22,39 @@ trapdoors = Trapdoors(board)
 
 controller = ArduinoController(board, claw, belt, trapdoors)
 
-shirtDisorderedList = [ # Will be injected by I2C in a near future
+shirtDisorderedList = [
     Shirt("big", "yellow"),
     Shirt("small", "yellow"),
+    Shirt("small", "blue"),
+    Shirt("small", "red"),
     Shirt("small", "yellow"),
+    Shirt("small", "red"),
     Shirt("small", "blue"),
-    Shirt("small", "blue"),
-    Shirt("small", "red"),
-    Shirt("small", "red"),
-    Shirt("small", "red"),
-    Shirt("small", "red"),
-    Shirt("small", "red"),
-    Shirt("small", "red"),
-    Shirt("small", "red"),
-    Shirt("small", "red"),
     Shirt("small", "red"),
     Shirt("small", "red"),
     Shirt("small", "blue"),
-    Shirt("small", "blue"),
+    Shirt("small", "red"),
+    Shirt("small", "red"),
+    Shirt("small", "red"),
+    Shirt("small", "red"),
+    Shirt("small", "red"),
+    Shirt("small", "red"),
     Shirt("small", "blue"),
     Shirt("small", "blue"),
     Shirt("small", "blue"),
     Shirt("small", "blue"),
     Shirt("small", "blue"),
-    Shirt("big", "yellow"),
-    Shirt("big", "yellow"),
+    Shirt("small", "blue"),
+    Shirt("small", "blue"),
     Shirt("big", "yellow"),
     Shirt("big", "yellow"),
     Shirt("big", "yellow"),
     Shirt("big", "blue"),
+    Shirt("small", "blue"),
+    Shirt("big", "yellow"),
+    Shirt("small", "red"),
+    Shirt("small", "red"),
+    Shirt("big", "yellow"),
     Shirt("big", "blue"),
     Shirt("big", "yellow")
 ]
@@ -64,9 +68,10 @@ while palletizer.dynamicShirtList:
         continue
 
     palletizer.separateByModel()
-    palletizer.labelTrapdoors()
-
     shirtsDestinys = palletizer.getTrapdoorsOrder()
+
+    controller.setup()
+    finalReport = "\n\nBoxes built:\n\n"
     for i, destiny in enumerate(shirtsDestinys):
         controller.moveShirt(destiny)
         currentSize = palletizer.countSizeDrop(i)
@@ -74,15 +79,18 @@ while palletizer.dynamicShirtList:
         if 10 in palletizer.droppedShirtsCounters.values():
 
             for i, trapdoor in enumerate(palletizer.trapdoorLabels):
-                if palletizer.extractSize(trapdoor) == currentSize:
+                trapdoorSize = palletizer.extractSize(trapdoor)
+                if trapdoorSize == currentSize:
 
                     while not controller.boxUnderRamp():
                         continue
 
-                    controller.trapdoors.drop(i + 1)
-                    controller.trapdoors.close(i + 1)
+                    controller.openTrapdoor(i + 1)
+                    controller.closeTrapdoor(i + 1)
 
-            print("\n\n Current box is ready, loaded with " + str(palletizer.getPlacedShirtsCounter(currentSize)) + " " + currentSize + " " + "shirts\n\n")
+            print(palletizer.currentBox[trapdoorSize])
+            finalReport +=  repr(palletizer.currentBox[trapdoorSize])
+            palletizer.currentBox[trapdoorSize].emptyBox()
 
             while False: # controller.boxUnderRamp():
                 continue
@@ -96,13 +104,15 @@ while palletizer.dynamicShirtList:
                 while not controller.boxUnderRamp():
                     continue
 
-                controller.trapdoors.drop(i + 1)
-                controller.trapdoors.close(i + 1)
+                controller.openTrapdoor(i + 1)
+                controller.closeTrapdoor(i + 1)
 
             while False: # controller.boxUnderRamp():
                 continue
 
-        print("\n\n Current box is ready, loaded with " + str(palletizer.getPlacedShirtsCounter("big")) + " big shirts\n\n")
+        print(palletizer.currentBox["big"])
+        finalReport +=  repr(palletizer.currentBox[trapdoorSize])
+        palletizer.currentBox["big"].emptyBox()
 
     if palletizer.getPlacedShirtsCounter("small") > 0:
         for i, trapdoor in enumerate(palletizer.trapdoorLabels):
@@ -111,13 +121,17 @@ while palletizer.dynamicShirtList:
                 while not controller.boxUnderRamp():
                     continue
 
-                controller.trapdoors.drop(i + 1)
-                controller.trapdoors.close(i + 1)
+                controller.openTrapdoor(i + 1)
+                controller.closeTrapdoor(i + 1)
 
             while False: # controller.boxUnderRamp():
                 continue
 
-        print("\n\n Current box is ready, loaded with " + str(palletizer.getPlacedShirtsCounter("small")) + " small shirts\n\n")
+        print(palletizer.currentBox["small"])
+        finalReport +=  repr(palletizer.currentBox[trapdoorSize])
+        palletizer.currentBox["small"].emptyBox()
 
     palletizer.cleanAttributes()
     palletizer.clearCounters()
+
+    print(finalReport)

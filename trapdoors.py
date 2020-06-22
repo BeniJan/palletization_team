@@ -30,15 +30,8 @@ class Trapdoors:
             # self.board.analog[{PORTA_DO_SERVO_DO_ALCAPAO_X}].write(30)
             self.trapdoorsStates[trapdoor] = False
 
-
-    def dropAll(self):
-        print("Opening all trapdoors")
-        for i in self.trapdoorsStates:
-            # self.board.analog[{PORTA_DO_SERVO_DO_ALCAPAO_i}].write(120)
-            self.trapdoorsStates[i + 1] = True
-
     def closeAll(self):
         print("Closing all trapdoors")
         for i in self.trapdoorsStates:
             # self.board.analog[{PORTA_DO_SERVO_DO_ALCAPAO_i}].write(30)
-            self.trapdoorsStates[i + 1] = False
+            self.trapdoorsStates[i] = False

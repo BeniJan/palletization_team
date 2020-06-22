@@ -1,4 +1,5 @@
 from math import ceil
+from box import Box
 from shirt import Shirt
 
 class Palletizer:
@@ -19,11 +20,23 @@ class Palletizer:
 
         self.boxes = []
 
-        self.trapdoorLabels = []
+        self.trapdoorLabels = [
+            "big&blue",
+            "big&yellow",
+            "big&red",
+            "small&blue",
+            "small&yellow",
+            "small&red"
+        ]
 
         self.droppedShirtsCounters = {
             "big": 0,
             "small": 0
+        }
+
+        self.currentBox = {
+            "big": Box("big"),
+            "small": Box("small")
         }
 
     def separateByModel(self):
@@ -32,16 +45,7 @@ class Palletizer:
 
             self.models[currentModel].append(i)
 
-
         return self.models
-
-
-    def labelTrapdoors(self):
-
-        for model, shirts in self.models.items():
-                self.trapdoorLabels.append(model)
-
-        return self.trapdoorLabels
 
     def getTrapdoorsOrder(self):
 
@@ -77,8 +81,10 @@ class Palletizer:
         return trapdoorsOrder
 
     def countSizeDrop(self, shirtIndex):
-        size = self.extractSize(repr(self.shirtList[shirtIndex]))
+        shirtModel = repr(self.shirtList[shirtIndex])
+        size = self.extractSize(shirtModel)
         self.droppedShirtsCounters[size] += 1
+        self.currentBox[size].addShirt(self.extractColor(shirtModel))
         print("\nA " + repr(self.shirtList[shirtIndex]) + " shirt have been placed\n")
         self.dynamicShirtList.pop(0)
         return size
@@ -108,5 +114,3 @@ class Palletizer:
             "small&yellow": [],
             "small&red": [],
         }
-
-        self.trapdoorLabels = []
