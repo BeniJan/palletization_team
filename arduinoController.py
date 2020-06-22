@@ -31,6 +31,10 @@ class ArduinoController:
     def boxUnderRamp(self):
         # return self.board.digital[{PORTA_DO_INFRAVERMELHO_DA_CAIXA}].read()
         return True
+
+    def emergencyButtonPressed(self):
+        # return self.board.digital[{PORTA_DO_BOTAO_DE_EMERGENCIA}].read()
+        return False
     
     def moveShirt(self, destinyTrapdoor):
         self.claw.reset()

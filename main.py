@@ -73,6 +73,8 @@ while palletizer.dynamicShirtList:
     controller.setup()
     finalReport = "\n\nBoxes built:\n\n"
     for i, destiny in enumerate(shirtsDestinys):
+        while controller.emergencyButtonPressed():
+            continue
         controller.moveShirt(destiny)
         currentSize = palletizer.countSizeDrop(i)
 
@@ -82,10 +84,11 @@ while palletizer.dynamicShirtList:
                 trapdoorSize = palletizer.extractSize(trapdoor)
                 if trapdoorSize == currentSize:
 
-                    while not controller.boxUnderRamp():
+                    while not controller.boxUnderRamp() or controller.emergencyButtonPressed():
                         continue
-
                     controller.openTrapdoor(i + 1)
+                    while controller.emergencyButtonPressed():
+                        continue
                     controller.closeTrapdoor(i + 1)
 
             print(palletizer.currentBox[trapdoorSize])
@@ -101,10 +104,11 @@ while palletizer.dynamicShirtList:
         for i, trapdoor in enumerate(palletizer.trapdoorLabels):
             if palletizer.extractSize(trapdoor) == "big":
 
-                while not controller.boxUnderRamp():
+                while not controller.boxUnderRamp() or controller.emergencyButtonPressed():
                     continue
-
                 controller.openTrapdoor(i + 1)
+                while controller.emergencyButtonPressed():
+                    continue
                 controller.closeTrapdoor(i + 1)
 
             while False: # controller.boxUnderRamp():
@@ -117,11 +121,12 @@ while palletizer.dynamicShirtList:
     if palletizer.getPlacedShirtsCounter("small") > 0:
         for i, trapdoor in enumerate(palletizer.trapdoorLabels):
             if palletizer.extractSize(trapdoor) == "small":
-
-                while not controller.boxUnderRamp():
+                
+                while not controller.boxUnderRamp() or controller.emergencyButtonPressed():
                     continue
-
                 controller.openTrapdoor(i + 1)
+                while controller.emergencyButtonPressed():
+                    continue
                 controller.closeTrapdoor(i + 1)
 
             while False: # controller.boxUnderRamp():
