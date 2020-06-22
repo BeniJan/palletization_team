@@ -39,7 +39,7 @@ class Palletizer:
             "small": Box("small")
         }
 
-    def separateByModel(self): # Pre-proccesses the shirt list to get its properties
+    def separateByModel(self): # Pre-processes the shirt list to get its properties
 
         for i, shirt in enumerate(self.shirtList):
             currentModel = repr(shirt)
