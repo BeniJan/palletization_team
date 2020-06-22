@@ -39,7 +39,8 @@ class Palletizer:
             "small": Box("small")
         }
 
-    def separateByModel(self):
+    def separateByModel(self): # Pre-proccesses the shirt list to get its properties
+
         for i, shirt in enumerate(self.shirtList):
             currentModel = repr(shirt)
 
@@ -47,7 +48,7 @@ class Palletizer:
 
         return self.models
 
-    def getTrapdoorsOrder(self):
+    def getTrapdoorsOrder(self): # Based on shirt list and the pre-proccess of it, defines to each shirt a trapdoor destiny
 
         trapdoorsOrder = []
 

@@ -1,14 +1,14 @@
 class Box:
 
     def __init__(self, size):
-        self.size = size
+        self.size = size.lower()
         self.content = {}
 
     def addShirt(self, color):
         try:
-            self.content[color] += 1
+            self.content[color.lower()] += 1
         except:
-            self.content[color] = 1
+            self.content[color.lower()] = 1
 
     def emptyBox(self):
         self.content = {}
